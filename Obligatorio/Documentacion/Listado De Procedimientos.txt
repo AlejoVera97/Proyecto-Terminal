@@ -1,0 +1,74 @@
+ALTAS
+
+SP_AltaEmpleado
+	@Usu Varchar(8), @Pasw Varchar(6), @Nombre Varchar(60)
+
+SP_AltaCompania
+	@Nombre Varchar(50), @Direccion Varchar(50), @Telefono Varchar (14)
+
+SP_AltaTerminalNac (Baja Lógica)
+	@CodT Varchar(6), @Ciudad Varchar(50), @Taxi Bit
+
+SP_AltaTerminalInt (Baja Lógica)
+	@CodT Varchar(6), @Ciudad Varchar(50), @Pais Varchar (50)
+
+SP_AltaViaje (Transacción Lógica)
+	@FechaHoraS DateTime, @FechaHoraL DateTime, @CantPas TinyInt, @Precio Money, @Anden TinyInt, @Nombre Varchar(50)
+@Usu Varchar(8)
+
+SP_AltaPasaPor (Transacción Lógica)
+	@CodInt, @CodT Varchar(6), @Orden int
+
+
+BAJAS
+
+
+SP_EliminarTerminal (Baja Lógica)
+	@CodT Varchar(6)
+	
+
+MODIFICACIONES
+
+SP_ModificarTerminalNac
+	@CodT Varchar(6), @Ciudad Varchar(50), @Taxi Bit
+
+SP_ModificarTerminalInt
+	@CodT Varchar(6), @Ciudad Varchar(50), @Pais Varchar(50)
+
+BUSQUEDAS
+
+SP_BuscarUsuario
+	@Usu Varchar(8)
+
+SP_BuscarUsuarioLog
+	@Usu Varchar(8), @Pasw Varchar(6)
+
+SP_BuscarCompania
+	@Nombre Varchar(50)
+
+SP_BuscarTerNacAct 
+	@CodT Varchar(6)
+
+SP_BuscarTerIntAct 
+	@CodT Varchar(6)
+
+SP_BuscarTodasTerNac 
+	@CodT Varchar(6)
+
+SP_BuscarTodasTerInt 
+	@CodT Varchar(6)
+
+LISTADOS
+
+SP_ListadodeCompanias
+
+SP_ListadoDeViajes
+
+SP_ListadoDeViajesPróximos
+
+SP_ListadoDeTerNacAct
+
+SP_ListadoDeTerIntAct
+
+SP_ParadasPorViaje
+	@CodI int

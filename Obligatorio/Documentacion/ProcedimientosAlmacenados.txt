@@ -1,0 +1,142 @@
+
+Create Proc SP_AltaTerminalNac
+	@CodT Varchar(6),
+	@Ciudad Varchar(50),
+	@Taxi Bit
+	As
+	Begin
+		If (Exists(Select * From Terminal Where CodT = @CodT AND Activa = 1))
+		Begin	
+		Return -1
+		End
+
+		If (Exists(Select * From Terminal Inner Join TerminalNac on Terminal.CodT = TerminalNac.CodT Where TerminalNac.CodT = @CodT AND Terminal.Activa = 0))
+		Begin	
+			BEGIN TRAN
+				Update Terminal
+				Set Activa = 1, Ciudad = @Ciudad
+				Where CodT = @CodT
+				If(@@Error !=0)
+				Begin
+					RollBack Tran
+					Return -2
+				End
+				Update TerminalNac
+				Set TieneT = @Taxi
+				Where CodT = @CodT
+				If(@@Error !=0)
+				Begin
+					RollBack Tran
+					Return -2
+				End
+					Commit Tran	
+		End
+		
+		If (Exists(Select * From TerminalInt Where CodT = @CodT))
+		Begin	
+		Return -2
+		End
+
+	BEGIN TRAN
+		Insert Terminal Values (@CodT, @Ciudad)
+		If(@@Error !=0)
+		Begin
+			RollBack Tran
+			Return -2
+		End
+		
+		Insert TerminalNac Values (@CodT, @Taxi)
+		If (@@Error != 0)
+		Begin
+			RollBack Tran
+			Return -2
+		End
+			Commit Tran
+	End
+Go
+
+Create Proc SP_AltaTerminalInt
+	@CodT Varchar(6),
+	@Ciudad Varchar(50),
+	@Pais Varchar (50)
+	As
+	Begin
+		If (Exists(Select * From Terminal Where CodT = @CodT AND Activa = 1))
+		Begin	
+		Return -1
+		End
+		If (Exists(Select * From Terminal Inner Join TerminalInt on Terminal.CodT = TerminalInt.CodT where TerminalInt.CodT = @CodT AND Terminal.Activa = 0))
+		Begin	
+			BEGIN TRAN
+				Update Terminal
+				Set Activa = 1, Ciudad = @Ciudad
+				Where CodT = @CodT
+				If(@@Error !=0)
+				Begin
+					RollBack Tran
+					Return -2
+				End
+				Update TerminalInt
+				Set Pais = @Pais
+				Where CodT = @CodT
+				If(@@Error !=0)
+				Begin
+					RollBack Tran
+					Return -2
+				End
+					Commit Tran	
+		End
+
+		If (Exists(Select * From TerminalNac Where CodT = @CodT))
+		Begin	
+		Return -2
+		End
+
+	BEGIN TRAN
+		Insert Terminal Values (@CodT, @Ciudad)
+		If(@@Error !=0)
+		Begin
+			RollBack Tran
+			Return -2
+		End
+		
+		Insert TerminalInt Values (@CodT, @Pais)
+		If (@@Error != 0)
+		Begin
+			RollBack Tran
+			Return -2
+		End
+			Commit Tran
+	End
+Go
+
+Create Proc SP_AltaViaje
+	@FechaHoraS DateTime,
+	@FechaHoraL DateTime,
+	@CantPas TinyInt,
+	@Precio Money,
+	@Anden TinyInt,
+	@Nombre Varchar(50),
+    @Usu Varchar(8)
+	As
+	Begin
+		If(Not Exists(Select * From Compania Where Nombre = @Nombre))
+		Begin
+		Return -1
+		End
+		If(Not Exists(Select * From Empleado Where UsuLog = @Usu))
+		Begin
+		Return -1
+		End
+	If Exists(Select * From Viaje Where Anden = @Anden And FechaHoraS > (@FechaHoraS - DATEADD(minute, -30, FechaHoraS)) 
+	And (@FechaHoraS + DATEADD(minute, +30, FechaHoraS)<= FechaHoraS)) 
+		Begin
+		Return -1
+		End
+	Insert Viaje (FechaHoraS, FechaHoraLl, CantPas, Precio, Anden, Nombre, UsuLog) Values (@FechaHoraS, @FechaHoraL, @CantPas, @Precio, @Anden, @Nombre, @Usu)
+		If(@@Error = 0)
+		Return @@Identity
+		Else 
+		Return 0
+	End
+Go
