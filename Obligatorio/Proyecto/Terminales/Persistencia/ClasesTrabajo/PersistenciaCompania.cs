@@ -25,13 +25,14 @@ namespace Persistencia
         public void Alta(Compania UnaCompania)
         {
             SqlConnection _cnn = new SqlConnection(Conexion.Cnn);
-
             SqlCommand _comando = new SqlCommand("SP_AltaCompania", _cnn);
             _comando.CommandType = System.Data.CommandType.StoredProcedure;
+
 
             _comando.Parameters.AddWithValue("@Nombre", UnaCompania.NombreC);
             _comando.Parameters.AddWithValue("@Direccion", UnaCompania.Direccion);
             _comando.Parameters.AddWithValue("@Telefono", UnaCompania.Telefono);
+
             SqlParameter _retorno = new SqlParameter("@Retorno", System.Data.SqlDbType.Int);
             _retorno.Direction = System.Data.ParameterDirection.ReturnValue;
             _comando.Parameters.Add(_retorno);

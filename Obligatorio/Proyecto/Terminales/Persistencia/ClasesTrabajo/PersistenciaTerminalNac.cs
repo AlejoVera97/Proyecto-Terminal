@@ -63,6 +63,7 @@ namespace Persistencia
             _comando.Parameters.AddWithValue("@CodT", UnaTerminal.CodT);
             _comando.Parameters.AddWithValue("@Ciudad", UnaTerminal.Ciudad);
             _comando.Parameters.AddWithValue("@Taxi", UnaTerminal.Taxi);
+
             SqlParameter _retorno = new SqlParameter("@Retorno", System.Data.SqlDbType.Int);
             _retorno.Direction = System.Data.ParameterDirection.ReturnValue;
             _comando.Parameters.Add(_retorno);

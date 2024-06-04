@@ -62,6 +62,9 @@ namespace Persistencia
             }
         }
 
+
+
+        // baja logicaaaa......
         internal List<PasaPor> CargoParadasdelViaje(int pCodI)
         {
             SqlConnection _cnn = new SqlConnection(Conexion.Cnn);

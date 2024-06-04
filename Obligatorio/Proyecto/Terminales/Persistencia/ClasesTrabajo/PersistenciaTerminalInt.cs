@@ -56,13 +56,14 @@ namespace Persistencia
         public void Modificar(TerminalInt UnaTerminal)
         {
             SqlConnection _cnn = new SqlConnection(Conexion.Cnn);
-
             SqlCommand _comando = new SqlCommand("SP_ModificarTerminalInt", _cnn);
             _comando.CommandType = System.Data.CommandType.StoredProcedure;
 
             _comando.Parameters.AddWithValue("@CodT", UnaTerminal.CodT);
             _comando.Parameters.AddWithValue("@Ciudad", UnaTerminal.Ciudad);
             _comando.Parameters.AddWithValue("@Pais", UnaTerminal.Pais);
+
+
             SqlParameter _retorno = new SqlParameter("@Retorno", System.Data.SqlDbType.Int);
             _retorno.Direction = System.Data.ParameterDirection.ReturnValue;
             _comando.Parameters.Add(_retorno);
@@ -89,9 +90,9 @@ namespace Persistencia
         public void Eliminar(TerminalInt pTerminalInt)
         {
             SqlConnection _cnn = new SqlConnection(Conexion.Cnn);
-
             SqlCommand _comando = new SqlCommand("SP_EliminarTerminal", _cnn);
             _comando.CommandType = System.Data.CommandType.StoredProcedure;
+
             _comando.Parameters.AddWithValue("@CodT", pTerminalInt.CodT);
             SqlParameter _retorno = new SqlParameter("@Retorno", System.Data.SqlDbType.Int);
             _retorno.Direction = System.Data.ParameterDirection.ReturnValue;
